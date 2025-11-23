@@ -13,7 +13,9 @@ namespace KooliProjekt.Application.Data
         {
         }
 
-        public DbSet<ToDoList> ToDoLists { get; set; }
-        public DbSet<ToDoItem> ToDoItems { get; set; }
+        public DbSet<AssetClass> AssetClasses { get; set; }
+        public DbSet<Asset> Assets { get; set; }
+        public DbSet<MonthlyState> MonthlyStates { get; set; }
+        public DbSet<MonthlyHolding> MonthlyHoldings { get; set; }
     }
 }
