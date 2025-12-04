@@ -15,9 +15,9 @@ namespace KooliProjekt.Application.Migrations
                 name: "AssetClasses",
                 columns: table => new
                 {
-                    AssetClassID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    AssetClassID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -28,13 +28,13 @@ namespace KooliProjekt.Application.Migrations
                 name: "MonthlyStates",
                 columns: table => new
                 {
-                    StateID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UninvestedCash = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Deposits = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Withdrawals = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TotalPortfolioValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    StateID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    StateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UninvestedCash = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Deposits = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Withdrawals = table.Column<decimal>(type: "TEXT", nullable: false),
+                    TotalPortfolioValue = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,12 +45,12 @@ namespace KooliProjekt.Application.Migrations
                 name: "Assets",
                 columns: table => new
                 {
-                    AssetID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AssetClassID = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Ticker = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsRealEstate = table.Column<bool>(type: "bit", nullable: false)
+                    AssetID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AssetClassID = table.Column<int>(type: "INTEGER", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Ticker = table.Column<string>(type: "TEXT", nullable: true),
+                    IsRealEstate = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,13 +67,13 @@ namespace KooliProjekt.Application.Migrations
                 name: "MonthlyHoldings",
                 columns: table => new
                 {
-                    HoldingID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StateID = table.Column<int>(type: "int", nullable: false),
-                    AssetID = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Value = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    MonthlyStateStateID = table.Column<int>(type: "int", nullable: true)
+                    HoldingID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    StateID = table.Column<int>(type: "INTEGER", nullable: false),
+                    AssetID = table.Column<int>(type: "INTEGER", nullable: false),
+                    Quantity = table.Column<decimal>(type: "TEXT", nullable: false),
+                    Value = table.Column<decimal>(type: "TEXT", nullable: false),
+                    MonthlyStateStateID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {

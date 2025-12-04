@@ -7,9 +7,9 @@ namespace KooliProjekt.WebAPI.Controllers
     public class AssetsController : ApiControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult> List()
+        public async Task<ActionResult> List(int page = 1, int pageSize = 10)
         {
-            return Ok(await Mediator.Send(new List.Query()));
+            return Ok(await Mediator.Send(new List.Query { Page = page, PageSize = pageSize }));
         }
     }
 }

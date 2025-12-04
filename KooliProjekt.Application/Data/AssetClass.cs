@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KooliProjekt.Application.Data
 {
@@ -11,6 +6,9 @@ namespace KooliProjekt.Application.Data
     {
         [Key]
         public int AssetClassID { get; set; }
+        
+        [Required(ErrorMessage = "Vara klassi nimi on kohustuslik")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "Nimi peab olema 1-100 märki")]
         public string Name { get; set; }
     }
 }

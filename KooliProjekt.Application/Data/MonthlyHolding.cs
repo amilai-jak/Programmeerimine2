@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KooliProjekt.Application.Data
 {
@@ -11,9 +6,17 @@ namespace KooliProjekt.Application.Data
     {
         [Key]
         public int HoldingID { get; set; }
+        
+        [Required(ErrorMessage = "Oleku ID on kohustuslik")]
         public int StateID { get; set; }
+        
+        [Required(ErrorMessage = "Vara ID on kohustuslik")]
         public int AssetID { get; set; }
+        
+        [Range(0, double.MaxValue, ErrorMessage = "Kogus ei saa olla negatiivne")]
         public decimal Quantity { get; set; }
+        
+        [Range(0, double.MaxValue, ErrorMessage = "V‰‰rtus ei saa olla negatiivne")]
         public decimal Value { get; set; }
 
         public MonthlyState MonthlyState { get; set; }

@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using KooliProjekt.Application.Data;
@@ -15,6 +13,8 @@ namespace KooliProjekt.Application.Features.AssetClasses
     {
         public class Query : IRequest<PagedResult<Result>>
         {
+            public int Page { get; set; } = 1;
+            public int PageSize { get; set; } = 10;
         }
 
         public class Result
@@ -36,7 +36,10 @@ namespace KooliProjekt.Application.Features.AssetClasses
             {
                 var query = _context.AssetClasses.AsNoTracking();
 
+                var count = await query.CountAsync(cancellationToken);
                 var items = await query
+                    .Skip((request.Page - 1) * request.PageSize)
+                    .Take(request.PageSize)
                     .Select(p => new Result
                     {
                         AssetClassID = p.AssetClassID,
@@ -47,7 +50,10 @@ namespace KooliProjekt.Application.Features.AssetClasses
                 return new PagedResult<Result>
                 {
                     Results = items,
-                    RowCount = await query.CountAsync(cancellationToken)
+                    CurrentPage = request.Page,
+                    PageCount = (int)Math.Ceiling(count / (double)request.PageSize),
+                    RowCount = count,
+                    PageSize = request.PageSize
                 };
             }
         }

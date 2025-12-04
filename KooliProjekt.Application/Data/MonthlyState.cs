@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KooliProjekt.Application.Data
 {
@@ -11,10 +7,20 @@ namespace KooliProjekt.Application.Data
     {
         [Key]
         public int StateID { get; set; }
+        
+        [Required(ErrorMessage = "Kuup‰ev on kohustuslik")]
         public DateTime StateDate { get; set; }
+        
+        [Range(0, double.MaxValue, ErrorMessage = "V‰‰rtus ei saa olla negatiivne")]
         public decimal UninvestedCash { get; set; }
+        
+        [Range(0, double.MaxValue, ErrorMessage = "V‰‰rtus ei saa olla negatiivne")]
         public decimal Deposits { get; set; }
+        
+        [Range(0, double.MaxValue, ErrorMessage = "V‰‰rtus ei saa olla negatiivne")]
         public decimal Withdrawals { get; set; }
+        
+        [Range(0, double.MaxValue, ErrorMessage = "V‰‰rtus ei saa olla negatiivne")]
         public decimal TotalPortfolioValue { get; set; }
     }
 }
