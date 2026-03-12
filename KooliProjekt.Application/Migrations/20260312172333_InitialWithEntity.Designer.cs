@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KooliProjekt.Application.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251204100005_AddDataAnnotations")]
-    partial class AddDataAnnotations
+    [Migration("20260312172333_InitialWithEntity")]
+    partial class InitialWithEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace KooliProjekt.Application.Migrations
 
             modelBuilder.Entity("KooliProjekt.Application.Data.Asset", b =>
                 {
-                    b.Property<int>("AssetID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -41,7 +41,7 @@ namespace KooliProjekt.Application.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("AssetID");
+                    b.HasKey("Id");
 
                     b.HasIndex("AssetClassID");
 
@@ -50,7 +50,7 @@ namespace KooliProjekt.Application.Migrations
 
             modelBuilder.Entity("KooliProjekt.Application.Data.AssetClass", b =>
                 {
-                    b.Property<int>("AssetClassID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -59,21 +59,18 @@ namespace KooliProjekt.Application.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("AssetClassID");
+                    b.HasKey("Id");
 
                     b.ToTable("AssetClasses");
                 });
 
             modelBuilder.Entity("KooliProjekt.Application.Data.MonthlyHolding", b =>
                 {
-                    b.Property<int>("HoldingID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("AssetID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("MonthlyStateStateID")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("Quantity")
@@ -85,18 +82,18 @@ namespace KooliProjekt.Application.Migrations
                     b.Property<decimal>("Value")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("HoldingID");
+                    b.HasKey("Id");
 
                     b.HasIndex("AssetID");
 
-                    b.HasIndex("MonthlyStateStateID");
+                    b.HasIndex("StateID");
 
                     b.ToTable("MonthlyHoldings");
                 });
 
             modelBuilder.Entity("KooliProjekt.Application.Data.MonthlyState", b =>
                 {
-                    b.Property<int>("StateID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -115,7 +112,7 @@ namespace KooliProjekt.Application.Migrations
                     b.Property<decimal>("Withdrawals")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("StateID");
+                    b.HasKey("Id");
 
                     b.ToTable("MonthlyStates");
                 });
@@ -141,7 +138,9 @@ namespace KooliProjekt.Application.Migrations
 
                     b.HasOne("KooliProjekt.Application.Data.MonthlyState", "MonthlyState")
                         .WithMany()
-                        .HasForeignKey("MonthlyStateStateID");
+                        .HasForeignKey("StateID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Asset");
 

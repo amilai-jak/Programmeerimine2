@@ -19,7 +19,7 @@ namespace KooliProjekt.Application.Features.MonthlyHoldings
 
         public class Result
         {
-            public int HoldingID { get; set; }
+            public int Id { get; set; }
             public int StateID { get; set; }
             public int AssetID { get; set; }
             public decimal Quantity { get; set; }
@@ -50,7 +50,7 @@ namespace KooliProjekt.Application.Features.MonthlyHoldings
                     .Take(request.PageSize)
                     .Select(p => new Result
                     {
-                        HoldingID = p.HoldingID,
+                        Id = p.Id,
                         StateID = p.StateID,
                         AssetID = p.AssetID,
                         Quantity = p.Quantity,

@@ -1,22 +1,22 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KooliProjekt.Application.Data
 {
-    public class MonthlyHolding
+    public class MonthlyHolding : Entity
     {
-        [Key]
-        public int HoldingID { get; set; }
-        
         [Required(ErrorMessage = "Oleku ID on kohustuslik")]
+        [ForeignKey("MonthlyState")]
         public int StateID { get; set; }
         
         [Required(ErrorMessage = "Vara ID on kohustuslik")]
+        [ForeignKey("Asset")]
         public int AssetID { get; set; }
         
         [Range(0, double.MaxValue, ErrorMessage = "Kogus ei saa olla negatiivne")]
         public decimal Quantity { get; set; }
         
-        [Range(0, double.MaxValue, ErrorMessage = "Väärtus ei saa olla negatiivne")]
+        [Range(0, double.MaxValue, ErrorMessage = "Vï¿½ï¿½rtus ei saa olla negatiivne")]
         public decimal Value { get; set; }
 
         public MonthlyState MonthlyState { get; set; }

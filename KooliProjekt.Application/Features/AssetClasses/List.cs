@@ -19,7 +19,7 @@ namespace KooliProjekt.Application.Features.AssetClasses
 
         public class Result
         {
-            public int AssetClassID { get; set; }
+            public int Id { get; set; }
             public string Name { get; set; }
         }
 
@@ -42,7 +42,7 @@ namespace KooliProjekt.Application.Features.AssetClasses
                     .Take(request.PageSize)
                     .Select(p => new Result
                     {
-                        AssetClassID = p.AssetClassID,
+                        Id = p.Id,
                         Name = p.Name
                     })
                     .ToListAsync(cancellationToken);

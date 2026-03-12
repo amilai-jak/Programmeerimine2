@@ -3,24 +3,22 @@ using System.ComponentModel.DataAnnotations;
 
 namespace KooliProjekt.Application.Data
 {
-    public class MonthlyState
+    public class MonthlyState : Entity
     {
-        [Key]
-        public int StateID { get; set; }
         
-        [Required(ErrorMessage = "Kuupäev on kohustuslik")]
+        [Required(ErrorMessage = "Kuupï¿½ev on kohustuslik")]
         public DateTime StateDate { get; set; }
         
-        [Range(0, double.MaxValue, ErrorMessage = "Väärtus ei saa olla negatiivne")]
+        [Range(0, double.MaxValue, ErrorMessage = "Vï¿½ï¿½rtus ei saa olla negatiivne")]
         public decimal UninvestedCash { get; set; }
         
-        [Range(0, double.MaxValue, ErrorMessage = "Väärtus ei saa olla negatiivne")]
+        [Range(0, double.MaxValue, ErrorMessage = "Vï¿½ï¿½rtus ei saa olla negatiivne")]
         public decimal Deposits { get; set; }
         
-        [Range(0, double.MaxValue, ErrorMessage = "Väärtus ei saa olla negatiivne")]
+        [Range(0, double.MaxValue, ErrorMessage = "Vï¿½ï¿½rtus ei saa olla negatiivne")]
         public decimal Withdrawals { get; set; }
         
-        [Range(0, double.MaxValue, ErrorMessage = "Väärtus ei saa olla negatiivne")]
+        [Range(0, double.MaxValue, ErrorMessage = "Vï¿½ï¿½rtus ei saa olla negatiivne")]
         public decimal TotalPortfolioValue { get; set; }
     }
 }

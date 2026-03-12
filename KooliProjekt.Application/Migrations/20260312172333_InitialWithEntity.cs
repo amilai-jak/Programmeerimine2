@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace KooliProjekt.Application.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialWithEntity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,20 +15,20 @@ namespace KooliProjekt.Application.Migrations
                 name: "AssetClasses",
                 columns: table => new
                 {
-                    AssetClassID = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AssetClasses", x => x.AssetClassID);
+                    table.PrimaryKey("PK_AssetClasses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "MonthlyStates",
                 columns: table => new
                 {
-                    StateID = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     StateDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UninvestedCash = table.Column<decimal>(type: "TEXT", nullable: false),
@@ -38,28 +38,28 @@ namespace KooliProjekt.Application.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MonthlyStates", x => x.StateID);
+                    table.PrimaryKey("PK_MonthlyStates", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Assets",
                 columns: table => new
                 {
-                    AssetID = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AssetClassID = table.Column<int>(type: "INTEGER", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Ticker = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Ticker = table.Column<string>(type: "TEXT", maxLength: 10, nullable: true),
                     IsRealEstate = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Assets", x => x.AssetID);
+                    table.PrimaryKey("PK_Assets", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Assets_AssetClasses_AssetClassID",
                         column: x => x.AssetClassID,
                         principalTable: "AssetClasses",
-                        principalColumn: "AssetClassID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -67,28 +67,28 @@ namespace KooliProjekt.Application.Migrations
                 name: "MonthlyHoldings",
                 columns: table => new
                 {
-                    HoldingID = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     StateID = table.Column<int>(type: "INTEGER", nullable: false),
                     AssetID = table.Column<int>(type: "INTEGER", nullable: false),
                     Quantity = table.Column<decimal>(type: "TEXT", nullable: false),
-                    Value = table.Column<decimal>(type: "TEXT", nullable: false),
-                    MonthlyStateStateID = table.Column<int>(type: "INTEGER", nullable: true)
+                    Value = table.Column<decimal>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MonthlyHoldings", x => x.HoldingID);
+                    table.PrimaryKey("PK_MonthlyHoldings", x => x.Id);
                     table.ForeignKey(
                         name: "FK_MonthlyHoldings_Assets_AssetID",
                         column: x => x.AssetID,
                         principalTable: "Assets",
-                        principalColumn: "AssetID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MonthlyHoldings_MonthlyStates_MonthlyStateStateID",
-                        column: x => x.MonthlyStateStateID,
+                        name: "FK_MonthlyHoldings_MonthlyStates_StateID",
+                        column: x => x.StateID,
                         principalTable: "MonthlyStates",
-                        principalColumn: "StateID");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -102,9 +102,9 @@ namespace KooliProjekt.Application.Migrations
                 column: "AssetID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MonthlyHoldings_MonthlyStateStateID",
+                name: "IX_MonthlyHoldings_StateID",
                 table: "MonthlyHoldings",
-                column: "MonthlyStateStateID");
+                column: "StateID");
         }
 
         /// <inheritdoc />
