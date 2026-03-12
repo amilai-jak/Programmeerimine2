@@ -1,20 +1,19 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KooliProjekt.Application.Data
 {
-    public class Asset
+    public class Asset : Entity
     {
-        [Key]
-        public int AssetID { get; set; }
-        
         [Required(ErrorMessage = "Vara klassi ID on kohustuslik")]
+        [ForeignKey("AssetClass")]
         public int AssetClassID { get; set; }
         
         [Required(ErrorMessage = "Vara nimi on kohustuslik")]
-        [StringLength(100, MinimumLength = 1, ErrorMessage = "Nimi peab olema 1-100 märki")]
+        [StringLength(100, MinimumLength = 1, ErrorMessage = "Nimi peab olema 1-100 mï¿½rki")]
         public string Name { get; set; }
         
-        [StringLength(10, ErrorMessage = "Ticker võib olla maksimaalselt 10 märki")]
+        [StringLength(10, ErrorMessage = "Ticker vï¿½ib olla maksimaalselt 10 mï¿½rki")]
         public string Ticker { get; set; }
         
         public bool IsRealEstate { get; set; }

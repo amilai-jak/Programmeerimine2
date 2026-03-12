@@ -19,7 +19,7 @@ namespace KooliProjekt.Application.Features.MonthlyStates
 
         public class Result
         {
-            public int StateID { get; set; }
+            public int Id { get; set; }
             public DateTime StateDate { get; set; }
             public decimal UninvestedCash { get; set; }
             public decimal Deposits { get; set; }
@@ -46,7 +46,7 @@ namespace KooliProjekt.Application.Features.MonthlyStates
                     .Take(request.PageSize)
                     .Select(p => new Result
                     {
-                        StateID = p.StateID,
+                        Id = p.Id,
                         StateDate = p.StateDate,
                         UninvestedCash = p.UninvestedCash,
                         Deposits = p.Deposits,

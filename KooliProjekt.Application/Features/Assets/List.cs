@@ -19,7 +19,7 @@ namespace KooliProjekt.Application.Features.Assets
 
         public class Result
         {
-            public int AssetID { get; set; }
+            public int Id { get; set; }
             public int AssetClassID { get; set; }
             public string Name { get; set; }
             public string Ticker { get; set; }
@@ -48,7 +48,7 @@ namespace KooliProjekt.Application.Features.Assets
                     .Take(request.PageSize)
                     .Select(p => new Result
                     {
-                        AssetID = p.AssetID,
+                        Id = p.Id,
                         AssetClassID = p.AssetClassID,
                         Name = p.Name,
                         Ticker = p.Ticker,
