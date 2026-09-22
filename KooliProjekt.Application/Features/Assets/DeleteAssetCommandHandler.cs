@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,17 +15,42 @@ namespace KooliProjekt.Application.Features.Assets
 
         public DeleteAssetCommandHandler(ApplicationDbContext dbContext)
         {
+            if (dbContext == null)
+            {
+                throw new ArgumentNullException(nameof(dbContext));
+            }
+
             _dbContext = dbContext;
         }
 
         public async Task<OperationResult> Handle(DeleteAssetCommand request, CancellationToken cancellationToken)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             var result = new OperationResult();
 
-            await _dbContext
+            if (request.Id <= 0)
+            {
+                return result;
+            }
+
+            // 23.01.2026 - ExecuteDeleteAsync asemel otsime kirje ules ja kustutame selle
+            // (InMemory andmebaas ei toeta ExecuteDeleteAsync meetodit)
+            var asset = await _dbContext
                 .Assets
-                .Where(a => a.Id == request.Id)
-                .ExecuteDeleteAsync();
+                .FirstOrDefaultAsync(asset => asset.Id == request.Id);
+
+            if (asset == null)
+            {
+                return result;
+            }
+
+            _dbContext.Assets.Remove(asset);
+
+            await _dbContext.SaveChangesAsync();
 
             return result;
         }

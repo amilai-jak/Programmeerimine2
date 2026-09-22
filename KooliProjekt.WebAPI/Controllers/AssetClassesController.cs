@@ -6,11 +6,19 @@ namespace KooliProjekt.WebAPI.Controllers
 {
     public class AssetClassesController : ApiControllerBase
     {
+        // 12.02.2026 - otsingu parameeter lisatud
         [HttpGet]
         [Route("List")]
-        public async Task<IActionResult> List(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> List(int page = 1, int pageSize = 10, string name = null)
         {
-            return Ok(await Mediator.Send(new List.Query { Page = page, PageSize = pageSize }));
+            var query = new ListAssetClassesQuery
+            {
+                Page = page,
+                PageSize = pageSize,
+                Name = name
+            };
+
+            return Result(await Mediator.Send(query));
         }
 
         [HttpGet]

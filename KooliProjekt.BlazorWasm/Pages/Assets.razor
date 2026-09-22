@@ -1,0 +1,53 @@
+@page "/assets"
+@inject IApiClient apiClient
+
+<PageTitle>Varad</PageTitle>
+
+<h1>Varad</h1>
+
+@if (assets == null)
+{
+    <p><em>Andmete laadimine...</em></p>
+}
+else
+{
+    <p><a class="btn btn-primary" href="/create">Add new</a></p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Vara klassi ID</th>
+                <th>Nimi</th>
+                <th>Ticker</th>
+                <th>Kinnisvara</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var asset in assets)
+            {
+                <tr>
+                    <td>@asset.Id</td>
+                    <td>@asset.AssetClassID</td>
+                    <td>@asset.Name</td>
+                    <td>@asset.Ticker</td>
+                    <td>@asset.IsRealEstate</td>
+                    <td>
+                        <a class="btn btn-success" href="/edit/@asset.Id">Edit</a>
+                        <button class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IList<Asset> assets;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await apiClient.List(1, 100);
+        assets = result.Value.Results;
+    }
+}

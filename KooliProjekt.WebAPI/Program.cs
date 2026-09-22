@@ -1,7 +1,6 @@
 using FluentValidation;
 using KooliProjekt.Application.Behaviors;
 using KooliProjekt.Application.Data;
-using KooliProjekt.Application.Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +26,17 @@ namespace KooliProjekt.WebAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            // 30.04.2026 - CORS-i tugi, et Blazori rakendus saaks API-t kasutada
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin();
+                    policy.AllowAnyHeader();
+                    policy.AllowAnyMethod();
+                });
+            });
+
             var applicationAssembly = typeof(ErrorHandlingBehavior<,>).Assembly;
             builder.Services.AddValidatorsFromAssembly(applicationAssembly);
             builder.Services.AddMediatR(config =>
@@ -37,11 +47,6 @@ namespace KooliProjekt.WebAPI
                 config.AddOpenBehavior(typeof(TransactionalBehavior<,>));
             });
 
-            builder.Services.AddScoped<IAssetClassRepository, AssetClassRepository>();
-            builder.Services.AddScoped<IAssetRepository, AssetRepository>();
-            builder.Services.AddScoped<IMonthlyStateRepository, MonthlyStateRepository>();
-            builder.Services.AddScoped<IMonthlyHoldingRepository, MonthlyHoldingRepository>();
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -51,13 +56,15 @@ namespace KooliProjekt.WebAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseCors();
+
             app.UseAuthorization();
 
             app.MapControllers();
 
             using(var scope = app.Services.CreateScope())
             using(var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>())
-            {                
+            {
                 dbContext.Database.Migrate();
 
 #if(DEBUG)

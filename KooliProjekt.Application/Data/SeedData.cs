@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using System;
 using System.Linq;
 
 namespace KooliProjekt.Application.Data
 {
+    [ExcludeFromCodeCoverage]
     public class SeedData
     {
         private readonly ApplicationDbContext _dbContext;

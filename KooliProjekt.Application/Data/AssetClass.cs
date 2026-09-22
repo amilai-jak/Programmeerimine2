@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using System.ComponentModel.DataAnnotations;
 
 namespace KooliProjekt.Application.Data
 {
+    [ExcludeFromCodeCoverage]
     public class AssetClass : Entity
     {
         [Required(ErrorMessage = "Vara klassi nimi on kohustuslik")]

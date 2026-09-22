@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace KooliProjekt.Application.Data
 {
+    [ExcludeFromCodeCoverage]
     public class MonthlyState : Entity
     {
         

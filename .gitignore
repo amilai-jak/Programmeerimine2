@@ -398,3 +398,9 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /KooliProjekt.Application.UnitTests/BuildReports/Coverage
+
+# Integratsioonitestide andmebaas
+*.db
+
+# Testide raportid
+/KooliProjekt.Application.UnitTests/BuildReports/UnitTests/

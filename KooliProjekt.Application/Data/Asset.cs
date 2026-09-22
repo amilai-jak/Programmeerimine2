@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KooliProjekt.Application.Data
 {
+    [ExcludeFromCodeCoverage]
     public class Asset : Entity
     {
         [Required(ErrorMessage = "Vara klassi ID on kohustuslik")]

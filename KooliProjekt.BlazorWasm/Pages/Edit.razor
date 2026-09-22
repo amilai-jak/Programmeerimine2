@@ -1,0 +1,112 @@
+@page "/create"
+@page "/edit/{Id:int}"
+
+@inject KooliProjekt.BlazorWasm.IApiClient apiClient
+@inject NavigationManager NavManager
+
+<h3>@title</h3>
+
+<EditForm EditContext="editContext" OnSubmit="@FormSubmitted">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p class="alert-danger">@error</p>
+    <div class="form-group row">
+        <label class="col-ms-2 col-form-label">ID</label>
+        <div class="col-sm-10">
+            @asset.Id
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-ms-2 col-form-label">Nimi</label>
+        <div class="col-sm-10">
+            <InputText class="form-control" @bind-Value="asset.Name" />
+            <ValidationMessage For="@(() => asset.Name)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-ms-2 col-form-label">Ticker</label>
+        <div class="col-sm-10">
+            <InputText class="form-control" @bind-Value="asset.Ticker" />
+            <ValidationMessage For="@(() => asset.Ticker)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-ms-2 col-form-label">Vara klassi ID</label>
+        <div class="col-sm-10">
+            <InputNumber class="form-control" @bind-Value="asset.AssetClassID" />
+            <ValidationMessage For="@(() => asset.AssetClassID)" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-ms-2 col-form-label">Kinnisvara</label>
+        <div class="col-sm-10">
+            <InputCheckbox class="form-check-input" @bind-Value="asset.IsRealEstate" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-ms-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private string error = "";
+    private string title = "Edit";
+    private EditContext? editContext;
+    private Asset asset = new Asset();
+
+    private ValidationMessageStore? messageStore;
+
+    protected override async Task OnInitializedAsync()
+    {
+        editContext = new EditContext(asset);
+        messageStore = new ValidationMessageStore(editContext);
+
+        if (Id == 0)
+        {
+            title = "Add";
+            return;
+        }
+
+        var response = await apiClient.Get(Id);
+        if (!response.HasErrors)
+        {
+            asset = response.Value;
+            editContext = new EditContext(asset);
+            messageStore = new ValidationMessageStore(editContext);
+        }
+    }
+
+    private async Task FormSubmitted()
+    {
+        // Eemalda eelnevad veateated
+        messageStore?.Clear();
+
+        var result = await apiClient.Save(asset);
+        if (!result.HasErrors)
+        {
+            NavManager.NavigateTo("/assets");
+            return;
+        }
+
+        foreach (var apiError in result.Errors)
+        {
+            messageStore?.Add(new FieldIdentifier(asset, string.Empty), apiError);
+        }
+
+        foreach (var propertyError in result.PropertyErrors)
+        {
+            var propertyName = propertyError.Key[0].ToString().ToUpper() + propertyError.Key.Substring(1);
+            messageStore?.Add(new FieldIdentifier(asset, propertyName), propertyError.Value);
+        }
+
+        // Teavita EditForm'i, et vead on muutunud
+        editContext?.NotifyValidationStateChanged();
+    }
+}

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using KooliProjekt.Application.Features.MonthlyStates;
 using Microsoft.AspNetCore.Mvc;
@@ -6,11 +7,25 @@ namespace KooliProjekt.WebAPI.Controllers
 {
     public class MonthlyStatesController : ApiControllerBase
     {
+        // 12.02.2026 - otsingu parameetrid lisatud
         [HttpGet]
         [Route("List")]
-        public async Task<IActionResult> List(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> List(int page = 1,
+                                              int pageSize = 10,
+                                              DateTime? stateDateFrom = null,
+                                              DateTime? stateDateTo = null,
+                                              decimal? minTotalPortfolioValue = null)
         {
-            return Ok(await Mediator.Send(new List.Query { Page = page, PageSize = pageSize }));
+            var query = new ListMonthlyStatesQuery
+            {
+                Page = page,
+                PageSize = pageSize,
+                StateDateFrom = stateDateFrom,
+                StateDateTo = stateDateTo,
+                MinTotalPortfolioValue = minTotalPortfolioValue
+            };
+
+            return Result(await Mediator.Send(query));
         }
 
         [HttpGet]
